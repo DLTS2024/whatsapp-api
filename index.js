@@ -101,6 +101,44 @@ app.get('/api/status', authenticate, (req, res) => {
     });
 });
 
+// Request pairing code (Link with phone number)
+app.post('/api/request-pairing-code', authenticate, async (req, res) => {
+    try {
+        const { phoneNumber } = req.body;
+
+        if (!phoneNumber) {
+            return res.status(400).json({ error: 'Phone number required' });
+        }
+
+        if (isClientReady) {
+            return res.json({ success: false, error: 'Already connected' });
+        }
+
+        if (!whatsappClient) {
+            return res.status(503).json({ error: 'WhatsApp client not initialized' });
+        }
+
+        // Format phone number (remove non-digits)
+        const formattedPhone = phoneNumber.replace(/[^0-9]/g, '');
+
+        console.log(`📲 Requesting pairing code for: ${formattedPhone}`);
+
+        const pairingCode = await whatsappClient.requestPairingCode(formattedPhone);
+
+        console.log(`🔑 Pairing code generated: ${pairingCode}`);
+
+        res.json({
+            success: true,
+            pairingCode: pairingCode,
+            phoneNumber: formattedPhone
+        });
+
+    } catch (error) {
+        console.error('Pairing code error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Get QR Code
 app.get('/api/qr', authenticate, (req, res) => {
     if (isClientReady) {
