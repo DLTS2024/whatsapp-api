@@ -45,7 +45,30 @@ function initializeWhatsAppClient() {
                 '--no-first-run',
                 '--no-zygote',
                 '--disable-gpu',
-                '--single-process'
+                '--single-process',
+                // Memory optimization
+                '--disable-extensions',
+                '--disable-background-networking',
+                '--disable-background-timer-throttling',
+                '--disable-backgrounding-occluded-windows',
+                '--disable-breakpad',
+                '--disable-component-extensions-with-background-pages',
+                '--disable-component-update',
+                '--disable-default-apps',
+                '--disable-features=TranslateUI',
+                '--disable-hang-monitor',
+                '--disable-ipc-flooding-protection',
+                '--disable-popup-blocking',
+                '--disable-prompt-on-repost',
+                '--disable-renderer-backgrounding',
+                '--disable-sync',
+                '--enable-features=NetworkService,NetworkServiceInProcess',
+                '--force-color-profile=srgb',
+                '--metrics-recording-only',
+                '--no-pings',
+                '--password-store=basic',
+                '--use-mock-keychain',
+                '--js-flags=--max-old-space-size=256'
             ]
         }
     });
